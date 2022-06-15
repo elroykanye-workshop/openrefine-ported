@@ -6,3 +6,8 @@ This is meant to be a simple script or a bunch of scripts to help run multiple i
  - Uses only LTS versions of OpenRefine.
  - Just for other project purposes.
 
+Run this script:
+
+```shell
+./run
+```
