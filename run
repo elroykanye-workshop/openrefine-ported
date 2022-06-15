@@ -1,0 +1,39 @@
+#!/bin/bash
+ARCHIVE_NAME="openrefine-linux-3.5.2.tar.gz"
+APP_DIR="openrefine-3.5.2"
+
+PORT_NUMBER=$1
+
+if [ $# != 1 ];
+then
+  echo "Enter a valid and unused port number: "
+  read PORT_NUMBER
+fi
+
+function download() {
+  DOWNLOAD_URL="https://github.com/OpenRefine/OpenRefine/releases/download/3.5.2/openrefine-linux-3.5.2.tar.gz"
+  wget $ARCHIVE_NAME $DOWNLOAD_URL
+}
+
+function extract() {
+  if [ ! -f "$ARCHIVE_NAME" ];
+  then
+    echo "OpenRefine not found. Downloading..."
+    download
+    echo "Done!"
+  fi
+  if [ ! -f "$APP_DIR" ];
+  then
+    echo "Extracting archive..."
+    tar -xf $ARCHIVE_NAME
+    echo "Done!"
+  fi
+}
+
+extract "$ARCHIVE_NAME"
+echo "The port number which you entered is $PORT_NUMBER"
+cat "$APP_DIR/refine.ini" > "$APP_DIR/old_refine.ini"
+echo "REFINE_PORT=$PORT_NUMBER" >> "$APP_DIR/refine.ini"
+echo "REFINE_PORT=$PORT_NUMBER" >> "$APP_DIR/refine.in"
+./$APP_DIR/refine
+cat "$APP_DIR/old_refine.ini" > "$APP_DIR/refine.ini"
